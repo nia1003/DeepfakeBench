@@ -1,0 +1,63 @@
+# Dummy Detector — 最小整合驗證設定檔
+# 不依賴任何 pretrained 權重，可在任何環境直接執行
+
+# 模型識別 (對應 @DETECTOR.register_module(module_name='dummy'))
+model_name: dummy
+backbone_name: null
+pretrained: null
+
+# 資料設定
+train_dataset: [FaceForensics++]
+test_dataset:  [FaceForensics++]
+compression: c23
+
+# 批次與幀數
+train_batchSize: 8
+test_batchSize:  8
+workers: 4
+frame_num:
+  train: 4
+  test:  4
+resolution: 256
+
+# 不需要 mask / landmark
+with_mask: false
+with_landmark: false
+
+# 資料增強（可選開啟）
+use_data_augmentation: false
+
+# 正規化參數（與其他 detector 一致）
+mean: [0.5, 0.5, 0.5]
+std:  [0.5, 0.5, 0.5]
+
+# 最佳化器
+optimizer:
+  type: adam
+  adam:
+    lr: 0.001
+    beta1: 0.9
+    beta2: 0.999
+    eps: 1.0e-8
+    weight_decay: 0.0
+
+# 訓練控制
+nEpochs: 2
+start_epoch: 0
+save_epoch: 1
+rec_iter: 10
+manualSeed: 42
+save_ckpt: false
+save_feat: false
+
+# 損失函數與評估指標
+loss_func: cross_entropy
+metric_scoring: auc
+
+# 硬體
+cuda: true
+cudnn: true
+
+# 記錄
+log_dir: ./logs
+logdir:  ./logs
