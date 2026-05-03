@@ -1,51 +1,51 @@
-sample_id,path,label,dataset,has_audio,fps,duration_sec,face_detected
-real_000,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/original_sequences/youtube/c23/frames/000,0,FF++,False,25,1.28,True
-real_001,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/original_sequences/youtube/c23/frames/001,0,FF++,False,25,1.28,True
-real_002,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/original_sequences/youtube/c23/frames/002,0,FF++,False,25,1.28,True
-real_003,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/original_sequences/youtube/c23/frames/003,0,FF++,False,25,1.28,True
-real_004,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/original_sequences/youtube/c23/frames/004,0,FF++,False,25,1.28,True
-real_005,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/original_sequences/youtube/c23/frames/005,0,FF++,False,25,1.28,True
-real_006,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/original_sequences/youtube/c23/frames/006,0,FF++,False,25,1.28,True
-real_007,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/original_sequences/youtube/c23/frames/007,0,FF++,False,25,1.28,True
-real_008,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/original_sequences/youtube/c23/frames/008,0,FF++,False,25,1.28,True
-real_009,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/original_sequences/youtube/c23/frames/009,0,FF++,False,25,1.28,True
-real_010,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/original_sequences/youtube/c23/frames/010,0,FF++,False,25,1.28,True
-real_011,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/original_sequences/youtube/c23/frames/011,0,FF++,False,25,1.28,True
-real_012,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/original_sequences/youtube/c23/frames/012,0,FF++,False,25,1.28,True
-real_013,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/original_sequences/youtube/c23/frames/013,0,FF++,False,25,1.28,True
-real_014,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/original_sequences/youtube/c23/frames/014,0,FF++,False,25,1.28,True
-real_015,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/original_sequences/youtube/c23/frames/015,0,FF++,False,25,1.28,True
-real_016,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/original_sequences/youtube/c23/frames/016,0,FF++,False,25,1.28,True
-real_017,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/original_sequences/youtube/c23/frames/017,0,FF++,False,25,1.28,True
-real_018,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/original_sequences/youtube/c23/frames/018,0,FF++,False,25,1.28,True
-real_019,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/original_sequences/youtube/c23/frames/019,0,FF++,False,25,1.28,True
-real_020,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/original_sequences/youtube/c23/frames/020,0,FF++,False,25,1.28,True
-real_021,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/original_sequences/youtube/c23/frames/021,0,FF++,False,25,1.28,True
-real_022,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/original_sequences/youtube/c23/frames/022,0,FF++,False,25,1.28,True
-real_023,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/original_sequences/youtube/c23/frames/023,0,FF++,False,25,1.28,True
-real_024,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/original_sequences/youtube/c23/frames/024,0,FF++,False,25,1.28,True
-fake_000_003,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/manipulated_sequences/Deepfakes/c23/frames/000_003,1,FF++,False,25,1.28,True
-fake_001_870,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/manipulated_sequences/Deepfakes/c23/frames/001_870,1,FF++,False,25,1.28,True
-fake_002_006,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/manipulated_sequences/Deepfakes/c23/frames/002_006,1,FF++,False,25,1.28,True
-fake_003_000,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/manipulated_sequences/Deepfakes/c23/frames/003_000,1,FF++,False,25,1.28,True
-fake_004_982,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/manipulated_sequences/Deepfakes/c23/frames/004_982,1,FF++,False,25,1.28,True
-fake_005_010,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/manipulated_sequences/Deepfakes/c23/frames/005_010,1,FF++,False,25,1.28,True
-fake_006_002,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/manipulated_sequences/Deepfakes/c23/frames/006_002,1,FF++,False,25,1.28,True
-fake_007_132,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/manipulated_sequences/Deepfakes/c23/frames/007_132,1,FF++,False,25,1.28,True
-fake_008_990,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/manipulated_sequences/Deepfakes/c23/frames/008_990,1,FF++,False,25,1.28,True
-fake_009_027,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/manipulated_sequences/Deepfakes/c23/frames/009_027,1,FF++,False,25,1.28,True
-fake_010_005,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/manipulated_sequences/Deepfakes/c23/frames/010_005,1,FF++,False,25,1.28,True
-fake_011_805,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/manipulated_sequences/Deepfakes/c23/frames/011_805,1,FF++,False,25,1.28,True
-fake_012_026,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/manipulated_sequences/Deepfakes/c23/frames/012_026,1,FF++,False,25,1.28,True
-fake_013_883,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/manipulated_sequences/Deepfakes/c23/frames/013_883,1,FF++,False,25,1.28,True
-fake_014_790,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/manipulated_sequences/Deepfakes/c23/frames/014_790,1,FF++,False,25,1.28,True
-fake_015_919,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/manipulated_sequences/Deepfakes/c23/frames/015_919,1,FF++,False,25,1.28,True
-fake_016_209,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/manipulated_sequences/Deepfakes/c23/frames/016_209,1,FF++,False,25,1.28,True
-fake_017_803,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/manipulated_sequences/Deepfakes/c23/frames/017_803,1,FF++,False,25,1.28,True
-fake_018_019,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/manipulated_sequences/Deepfakes/c23/frames/018_019,1,FF++,False,25,1.28,True
-fake_019_018,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/manipulated_sequences/Deepfakes/c23/frames/019_018,1,FF++,False,25,1.28,True
-fake_020_344,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/manipulated_sequences/Deepfakes/c23/frames/020_344,1,FF++,False,25,1.2,True
-fake_021_312,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/manipulated_sequences/Deepfakes/c23/frames/021_312,1,FF++,False,25,1.28,True
-fake_022_489,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/manipulated_sequences/Deepfakes/c23/frames/022_489,1,FF++,False,25,1.28,True
-fake_023_923,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/manipulated_sequences/Deepfakes/c23/frames/023_923,1,FF++,False,25,1.28,True
-fake_024_073,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/manipulated_sequences/Deepfakes/c23/frames/024_073,1,FF++,False,25,1.28,True
+sample_id,path,label,dataset,has_audio,fps,duration_sec,face_detected,notes
+real_000,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/original_sequences/youtube/c23/frames/000,0,FF++,False,25,1.28,True,FF++ c23 無音訊；frames 由 preprocess.py 抽取
+real_001,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/original_sequences/youtube/c23/frames/001,0,FF++,False,25,1.28,True,FF++ c23 無音訊；frames 由 preprocess.py 抽取
+real_002,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/original_sequences/youtube/c23/frames/002,0,FF++,False,25,1.28,True,FF++ c23 無音訊；frames 由 preprocess.py 抽取
+real_003,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/original_sequences/youtube/c23/frames/003,0,FF++,False,25,1.28,True,FF++ c23 無音訊；frames 由 preprocess.py 抽取
+real_004,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/original_sequences/youtube/c23/frames/004,0,FF++,False,25,1.28,True,FF++ c23 無音訊；frames 由 preprocess.py 抽取
+real_005,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/original_sequences/youtube/c23/frames/005,0,FF++,False,25,1.28,True,FF++ c23 無音訊；frames 由 preprocess.py 抽取
+real_006,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/original_sequences/youtube/c23/frames/006,0,FF++,False,25,1.28,True,FF++ c23 無音訊；frames 由 preprocess.py 抽取
+real_007,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/original_sequences/youtube/c23/frames/007,0,FF++,False,25,1.28,True,FF++ c23 無音訊；frames 由 preprocess.py 抽取
+real_008,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/original_sequences/youtube/c23/frames/008,0,FF++,False,25,1.28,True,FF++ c23 無音訊；frames 由 preprocess.py 抽取
+real_009,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/original_sequences/youtube/c23/frames/009,0,FF++,False,25,1.28,True,FF++ c23 無音訊；frames 由 preprocess.py 抽取
+real_010,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/original_sequences/youtube/c23/frames/010,0,FF++,False,25,1.28,True,FF++ c23 無音訊；frames 由 preprocess.py 抽取
+real_011,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/original_sequences/youtube/c23/frames/011,0,FF++,False,25,1.28,True,FF++ c23 無音訊；frames 由 preprocess.py 抽取
+real_012,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/original_sequences/youtube/c23/frames/012,0,FF++,False,25,1.28,True,FF++ c23 無音訊；frames 由 preprocess.py 抽取
+real_013,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/original_sequences/youtube/c23/frames/013,0,FF++,False,25,1.28,True,FF++ c23 無音訊；frames 由 preprocess.py 抽取
+real_014,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/original_sequences/youtube/c23/frames/014,0,FF++,False,25,1.28,True,FF++ c23 無音訊；frames 由 preprocess.py 抽取
+real_015,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/original_sequences/youtube/c23/frames/015,0,FF++,False,25,1.28,True,FF++ c23 無音訊；frames 由 preprocess.py 抽取
+real_016,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/original_sequences/youtube/c23/frames/016,0,FF++,False,25,1.28,True,FF++ c23 無音訊；frames 由 preprocess.py 抽取
+real_017,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/original_sequences/youtube/c23/frames/017,0,FF++,False,25,1.28,True,FF++ c23 無音訊；frames 由 preprocess.py 抽取
+real_018,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/original_sequences/youtube/c23/frames/018,0,FF++,False,25,1.28,True,FF++ c23 無音訊；frames 由 preprocess.py 抽取
+real_019,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/original_sequences/youtube/c23/frames/019,0,FF++,False,25,1.28,True,FF++ c23 無音訊；frames 由 preprocess.py 抽取
+real_020,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/original_sequences/youtube/c23/frames/020,0,FF++,False,25,1.28,True,FF++ c23 無音訊；frames 由 preprocess.py 抽取
+real_021,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/original_sequences/youtube/c23/frames/021,0,FF++,False,25,1.28,True,FF++ c23 無音訊；frames 由 preprocess.py 抽取
+real_022,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/original_sequences/youtube/c23/frames/022,0,FF++,False,25,1.28,True,FF++ c23 無音訊；frames 由 preprocess.py 抽取
+real_023,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/original_sequences/youtube/c23/frames/023,0,FF++,False,25,1.28,True,FF++ c23 無音訊；frames 由 preprocess.py 抽取
+real_024,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/original_sequences/youtube/c23/frames/024,0,FF++,False,25,1.28,True,FF++ c23 無音訊；frames 由 preprocess.py 抽取
+fake_000_003,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/manipulated_sequences/Deepfakes/c23/frames/000_003,1,FF++,False,25,1.28,True,FF++ c23 無音訊；frames 由 preprocess.py 抽取
+fake_001_870,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/manipulated_sequences/Deepfakes/c23/frames/001_870,1,FF++,False,25,1.28,True,FF++ c23 無音訊；frames 由 preprocess.py 抽取
+fake_002_006,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/manipulated_sequences/Deepfakes/c23/frames/002_006,1,FF++,False,25,1.28,True,FF++ c23 無音訊；frames 由 preprocess.py 抽取
+fake_003_000,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/manipulated_sequences/Deepfakes/c23/frames/003_000,1,FF++,False,25,1.28,True,FF++ c23 無音訊；frames 由 preprocess.py 抽取
+fake_004_982,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/manipulated_sequences/Deepfakes/c23/frames/004_982,1,FF++,False,25,1.28,True,FF++ c23 無音訊；frames 由 preprocess.py 抽取
+fake_005_010,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/manipulated_sequences/Deepfakes/c23/frames/005_010,1,FF++,False,25,1.28,True,FF++ c23 無音訊；frames 由 preprocess.py 抽取
+fake_006_002,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/manipulated_sequences/Deepfakes/c23/frames/006_002,1,FF++,False,25,1.28,True,FF++ c23 無音訊；frames 由 preprocess.py 抽取
+fake_007_132,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/manipulated_sequences/Deepfakes/c23/frames/007_132,1,FF++,False,25,1.28,True,FF++ c23 無音訊；frames 由 preprocess.py 抽取
+fake_008_990,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/manipulated_sequences/Deepfakes/c23/frames/008_990,1,FF++,False,25,1.28,True,FF++ c23 無音訊；frames 由 preprocess.py 抽取
+fake_009_027,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/manipulated_sequences/Deepfakes/c23/frames/009_027,1,FF++,False,25,1.28,True,FF++ c23 無音訊；frames 由 preprocess.py 抽取
+fake_010_005,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/manipulated_sequences/Deepfakes/c23/frames/010_005,1,FF++,False,25,1.28,True,FF++ c23 無音訊；frames 由 preprocess.py 抽取
+fake_011_805,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/manipulated_sequences/Deepfakes/c23/frames/011_805,1,FF++,False,25,1.28,True,FF++ c23 無音訊；frames 由 preprocess.py 抽取
+fake_012_026,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/manipulated_sequences/Deepfakes/c23/frames/012_026,1,FF++,False,25,1.28,True,FF++ c23 無音訊；frames 由 preprocess.py 抽取
+fake_013_883,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/manipulated_sequences/Deepfakes/c23/frames/013_883,1,FF++,False,25,1.28,True,FF++ c23 無音訊；frames 由 preprocess.py 抽取
+fake_014_790,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/manipulated_sequences/Deepfakes/c23/frames/014_790,1,FF++,False,25,1.28,True,FF++ c23 無音訊；frames 由 preprocess.py 抽取
+fake_015_919,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/manipulated_sequences/Deepfakes/c23/frames/015_919,1,FF++,False,25,1.28,True,FF++ c23 無音訊；frames 由 preprocess.py 抽取
+fake_016_209,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/manipulated_sequences/Deepfakes/c23/frames/016_209,1,FF++,False,25,1.28,True,FF++ c23 無音訊；frames 由 preprocess.py 抽取
+fake_017_803,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/manipulated_sequences/Deepfakes/c23/frames/017_803,1,FF++,False,25,1.28,True,FF++ c23 無音訊；frames 由 preprocess.py 抽取
+fake_018_019,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/manipulated_sequences/Deepfakes/c23/frames/018_019,1,FF++,False,25,1.28,True,FF++ c23 無音訊；frames 由 preprocess.py 抽取
+fake_019_018,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/manipulated_sequences/Deepfakes/c23/frames/019_018,1,FF++,False,25,1.28,True,FF++ c23 無音訊；frames 由 preprocess.py 抽取
+fake_020_344,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/manipulated_sequences/Deepfakes/c23/frames/020_344,1,FF++,False,25,1.2,True,FF++ c23 無音訊；frames 由 preprocess.py 抽取
+fake_021_312,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/manipulated_sequences/Deepfakes/c23/frames/021_312,1,FF++,False,25,1.28,True,FF++ c23 無音訊；frames 由 preprocess.py 抽取
+fake_022_489,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/manipulated_sequences/Deepfakes/c23/frames/022_489,1,FF++,False,25,1.28,True,FF++ c23 無音訊；frames 由 preprocess.py 抽取
+fake_023_923,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/manipulated_sequences/Deepfakes/c23/frames/023_923,1,FF++,False,25,1.28,True,FF++ c23 無音訊；frames 由 preprocess.py 抽取
+fake_024_073,/Users/nia/DeepfakeBench/datasets/rgb/FaceForensics++/manipulated_sequences/Deepfakes/c23/frames/024_073,1,FF++,False,25,1.28,True,FF++ c23 無音訊；frames 由 preprocess.py 抽取
