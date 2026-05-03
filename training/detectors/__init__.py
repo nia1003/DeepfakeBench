@@ -44,3 +44,6 @@ from .multi_attention_detector import MultiAttentionDetector
 from .sia_detector import SIADetector
 from .tall_detector import TALLDetector
 from .effort_detector import EffortDetector
+
+# training/detectors/__init__.py 末尾加入：
+from .dummy_detector import DummyDetector

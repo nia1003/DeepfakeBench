@@ -1,0 +1,52 @@
+pretrained: false
+model_name: dummy
+backbone_name: null
+train_dataset: [FaceForensics++]
+test_dataset: [FaceForensics++]
+compression: c23
+train_batchSize: 4
+test_batchSize: 4
+workers: 2
+frame_num: {train: 4, test: 4}
+resolution: 224
+with_mask: false
+with_landmark: false
+loss_func: cross_entropy
+optimizer:
+  type: adam
+  adam:
+    lr: 0.0002
+    beta1: 0.9
+    beta2: 0.999
+    eps: 0.00000001
+    weight_decay: 0.0005
+    amsgrad: false
+nEpochs: 1
+metric_scoring: auc
+cuda: false
+cudnn: true
+save_ckpt: false
+save_feat: false
+manualSeed: 1024
+manualSeed: 1024
+rgb_dir: /Users/nia/datasets
+lmdb: false
+lmdb: false
+lmdb: False
+dataset_json_folder: preprocessing/dataset_json_v3
+use_data_augmentation: false
+data_aug:
+  flip_prob: 0.5
+  rotate_prob: 0.5
+  rotate_limit: [-10, 10]
+  blur_prob: 0.5
+  blur_limit: [3, 7]
+  brightness_prob: 0.5
+  brightness_limit: [-0.1, 0.1]
+  contrast_limit: [-0.1, 0.1]
+  quality_lower: 40
+  quality_upper: 100
+lr_scheduler: null
+start_epoch: 0
+mean: [0.5, 0.5, 0.5]
+std: [0.5, 0.5, 0.5]
