@@ -57,6 +57,8 @@ We then additionally obtain "frames", "landmarks", and "mask" directories in sam
 import os
 import sys
 import time
+import wave
+import subprocess
 import cv2
 import dlib
 import yaml
@@ -67,6 +69,7 @@ import concurrent.futures
 import numpy as np
 from tqdm import tqdm
 from pathlib import Path
+from typing import Optional
 from imutils import face_utils
 from skimage import transform as trans
 
@@ -99,6 +102,60 @@ def create_logger(log_path):
     logger.addHandler(sh)
 
     return logger
+
+
+def extract_audio(video_path: Path, save_dir: Path, fps: float = 25.0) -> Optional[Path]:
+    """Extract 16kHz mono WAV and remove leading 2-frame silence (~80ms @ 25fps).
+
+    The leading silence trim prevents models from learning the synthesis artifact
+    shortcut present in FakeAVCeleb and similar TTS-generated audio.
+    """
+    audio_dir = save_dir / 'audio'
+    audio_dir.mkdir(parents=True, exist_ok=True)
+    wav_path = audio_dir / f"{video_path.stem}.wav"
+    if wav_path.exists():
+        return wav_path
+
+    tmp_path = audio_dir / f"{video_path.stem}_raw.wav"
+    cmd = [
+        'ffmpeg', '-i', str(video_path),
+        '-vn', '-acodec', 'pcm_s16le', '-ar', '16000', '-ac', '1',
+        '-y', str(tmp_path)
+    ]
+    result = subprocess.run(cmd, capture_output=True)
+    if result.returncode != 0 or not tmp_path.exists():
+        return None
+
+    skip_samples = int((2 / fps) * 16000)
+    try:
+        with wave.open(str(tmp_path), 'r') as wf:
+            raw = wf.readframes(wf.getnframes())
+        audio = np.frombuffer(raw, dtype=np.int16)[skip_samples:]
+        with wave.open(str(wav_path), 'w') as wf:
+            wf.setnchannels(1)
+            wf.setsampwidth(2)
+            wf.setframerate(16000)
+            wf.writeframes(audio.tobytes())
+        tmp_path.unlink(missing_ok=True)
+    except Exception as e:
+        tmp_path.rename(wav_path)
+
+    return wav_path if wav_path.exists() else None
+
+
+def save_audio_npz(wav_path: Path) -> Optional[Path]:
+    """Pre-decode trimmed WAV to float32 NPZ for faster training I/O."""
+    npz_path = wav_path.with_suffix('.npz')
+    if npz_path.exists():
+        return npz_path
+    try:
+        with wave.open(str(wav_path), 'r') as wf:
+            raw = wf.readframes(wf.getnframes())
+        audio = np.frombuffer(raw, dtype=np.int16).astype(np.float32) / 32768.0
+        np.savez_compressed(str(npz_path), audio=audio)
+        return npz_path
+    except Exception:
+        return None
 
 
 def get_keypts(image, face, predictor, face_detector):
@@ -211,8 +268,10 @@ def video_manipulate(
     mask_path: Path,
     dataset_path: Path,
     mode: str,
-    num_frames: int, 
-    stride: int, 
+    num_frames: int,
+    stride: int,
+    with_audio: bool = False,
+    audio_cache_npz: bool = False,
     ) -> None:
     """
     Processes a single video file by detecting and cropping the largest face in each frame and saving the results.
@@ -347,11 +406,18 @@ def video_manipulate(
     # Iterate through the videos in the dataset and extract faces
     try:
         facecrop(movie_path, mask_path, dataset_path, mode, num_frames, stride, face_predictor, face_detector)
+        if with_audio:
+            wav = extract_audio(movie_path, dataset_path)
+            if wav is None:
+                logger.warning(f"No audio extracted from {movie_path}")
+            elif audio_cache_npz:
+                save_audio_npz(wav)
     except Exception as e:
         logger.error(f"Error processing video {movie_path}: {e}")
 
 
-def preprocess(dataset_path, mask_path, mode, num_frames, stride, logger):
+def preprocess(dataset_path, mask_path, mode, num_frames, stride, logger,
+               with_audio=False, audio_cache_npz=False):
     # Define paths to videos in dataset
     movies_path_list = sorted([Path(p) for p in glob.glob(os.path.join(dataset_path, '**/*.mp4'), recursive=True)])
     if len(movies_path_list) == 0:
@@ -395,6 +461,8 @@ def preprocess(dataset_path, mask_path, mode, num_frames, stride, logger):
                 mode,
                 num_frames,
                 stride,
+                with_audio,
+                audio_cache_npz,
                 )
             )
         # Wait for all futures to complete and log any errors
@@ -428,6 +496,8 @@ if __name__ == '__main__':
     mode = config['preprocess']['mode']['default']
     stride = config['preprocess']['stride']['default']
     num_frames = config['preprocess']['num_frames']['default']
+    with_audio = config['preprocess'].get('with_audio', {}).get('default', False)
+    audio_cache_npz = config['preprocess'].get('audio_cache_npz', {}).get('default', False)
     
     # use dataset_name and dataset_root_path to get dataset_path
     dataset_path = Path(os.path.join(dataset_root_path, dataset_name))
@@ -505,9 +575,9 @@ if __name__ == '__main__':
             # only part of FaceForensics++ has mask
             if dataset_name == 'FaceForensics++' and sub_dataset_path.parent in mask_dataset_paths:
                 mask_dataset_path = os.path.join(sub_dataset_path.parent, "masks")
-                preprocess(sub_dataset_path, mask_dataset_path, mode, num_frames, stride, logger)
+                preprocess(sub_dataset_path, mask_dataset_path, mode, num_frames, stride, logger, with_audio, audio_cache_npz)
             else:
-                preprocess(sub_dataset_path, None, mode, num_frames, stride, logger)
+                preprocess(sub_dataset_path, None, mode, num_frames, stride, logger, with_audio, audio_cache_npz)
     else:
         logger.error(f"Sub Dataset path does not exist: {sub_dataset_paths}")
         sys.exit()

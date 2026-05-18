@@ -41,3 +41,9 @@ label_dict:
   # Roop
   roop_Real: 0
   roop_Fake: 1
+  # FakeAVCeleb
+  FakeAVCeleb_real: 0
+  FakeAVCeleb_fake: 1
+# Audio modality (default off for backward compatibility)
+with_audio: false
+audio_cache_npz: false

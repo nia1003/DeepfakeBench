@@ -4,6 +4,7 @@
 # description: Abstract Base Class for all types of deepfake datasets.
 
 import sys
+import wave as _wave
 
 import lmdb
 
@@ -389,6 +390,46 @@ class DeepfakeAbstractBaseDataset(data.Dataset):
                 landmark=self.rescale_landmarks(np.float32(landmark), original_size=256, new_size=self.config['resolution'])
         return landmark
 
+    @staticmethod
+    def _derive_audio_path(image_path: str):
+        """Map a frame path to its sibling audio WAV and NPZ paths.
+
+        Expects directory layout: .../audio/<video_name>.wav  alongside
+        .../frames/<video_name>/<frame>.png (produced by preprocess.py).
+        Returns (wav_path, npz_path) strings, or (None, None) if layout unrecognised.
+        """
+        norm = image_path.replace('\\', '/')
+        parts = norm.split('/')
+        try:
+            frames_idx = parts.index('frames')
+        except ValueError:
+            return None, None
+        audio_base = '/'.join(parts[:frames_idx]) + '/audio/' + parts[frames_idx + 1]
+        return audio_base + '.wav', audio_base + '.npz'
+
+    def _load_audio(self, image_paths) -> torch.Tensor:
+        """Load trimmed 16kHz audio for a clip; prefer NPZ cache over WAV.
+
+        Falls back to a 3-second zero tensor when audio is unavailable so that
+        batches remain consistent shape even for audio-less datasets (e.g. FF++).
+        """
+        ref = image_paths[0] if isinstance(image_paths, list) else image_paths
+        wav_path, npz_path = self._derive_audio_path(ref)
+
+        if npz_path and os.path.exists(npz_path):
+            audio = np.load(npz_path)['audio']
+        elif wav_path and os.path.exists(wav_path):
+            try:
+                with _wave.open(wav_path, 'r') as wf:
+                    raw = wf.readframes(wf.getnframes())
+                audio = np.frombuffer(raw, dtype=np.int16).astype(np.float32) / 32768.0
+            except Exception:
+                audio = np.zeros(16000 * 3, dtype=np.float32)
+        else:
+            audio = np.zeros(16000 * 3, dtype=np.float32)
+
+        return torch.from_numpy(audio)
+
     def to_tensor(self, img):
         """
         Convert an image to a PyTorch tensor.
@@ -540,7 +581,11 @@ class DeepfakeAbstractBaseDataset(data.Dataset):
             if not any(m is None or (isinstance(m, list) and None in m) for m in mask_tensors):
                 mask_tensors = mask_tensors[0]
 
-        return image_tensors, label, landmark_tensors, mask_tensors
+        audio_tensor = None
+        if self.config.get('with_audio', False):
+            audio_tensor = self._load_audio(image_paths)
+
+        return image_tensors, label, landmark_tensors, mask_tensors, audio_tensor
     
     @staticmethod
     def collate_fn(batch):
@@ -555,8 +600,8 @@ class DeepfakeAbstractBaseDataset(data.Dataset):
             A tuple containing the image tensor, the label tensor, the landmark tensor,
             and the mask tensor.
         """
-        # Separate the image, label, landmark, and mask tensors
-        images, labels, landmarks, masks = zip(*batch)
+        # Separate the image, label, landmark, mask, and audio tensors
+        images, labels, landmarks, masks, audios = zip(*batch)
         
         # Stack the image, label, landmark, and mask tensors
         images = torch.stack(images, dim=0)
@@ -579,6 +624,10 @@ class DeepfakeAbstractBaseDataset(data.Dataset):
         data_dict['label'] = labels
         data_dict['landmark'] = landmarks
         data_dict['mask'] = masks
+        if not any(a is None for a in audios):
+            data_dict['audio'] = torch.stack(audios, dim=0)
+        else:
+            data_dict['audio'] = None
         return data_dict
 
     def __len__(self):

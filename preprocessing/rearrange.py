@@ -57,11 +57,65 @@ After running this code, it will generates a json file looks like the below stru
 import os
 import glob
 import re
+import wave
 import cv2
 import json
 import yaml
 import pandas as pd
 from pathlib import Path
+
+
+def _get_audio_fields_from_frames(frame_paths: list, fps: int = 25) -> dict:
+    """Derive audio metadata for a video entry from its frame paths.
+
+    Expects audio extracted by preprocess.py at <dataset>/audio/<video_name>.wav
+    relative to the frames directory sibling.
+    """
+    empty = {'audio': None, 'audio_npz': None, 'has_audio': False,
+             'audio_sample_rate': 16000, 'fps': fps, 'duration_sec': None}
+    if not frame_paths:
+        return empty
+
+    first_frame = frame_paths[0].replace('\\', '/')
+    parts = first_frame.split('/')
+    try:
+        frames_idx = parts.index('frames')
+    except ValueError:
+        return empty
+
+    audio_dir = '/'.join(parts[:frames_idx]) + '/audio'
+    video_name = parts[frames_idx + 1]
+    wav_path = f"{audio_dir}/{video_name}.wav"
+    npz_path = f"{audio_dir}/{video_name}.npz"
+
+    has_audio = os.path.exists(wav_path)
+    duration_sec = None
+    if has_audio:
+        try:
+            with wave.open(wav_path, 'r') as wf:
+                duration_sec = round(wf.getnframes() / wf.getframerate(), 3)
+        except Exception:
+            pass
+
+    return {
+        'audio': wav_path if has_audio else None,
+        'audio_npz': npz_path if os.path.exists(npz_path) else None,
+        'has_audio': has_audio,
+        'audio_sample_rate': 16000,
+        'fps': fps,
+        'duration_sec': duration_sec,
+    }
+
+
+def _enrich_with_audio(d: dict) -> None:
+    """Recursively add audio fields to every video entry (dict with 'frames' key)."""
+    if not isinstance(d, dict):
+        return
+    if 'frames' in d and 'audio' not in d:
+        d.update(_get_audio_fields_from_frames(d['frames']))
+    else:
+        for v in d.values():
+            _enrich_with_audio(v)
 
 
 def generate_dataset_file(dataset_name, dataset_root_path, output_file_path, compression_level='c23', perturbation = 'end_to_end'):
@@ -490,6 +544,9 @@ def generate_dataset_file(dataset_name, dataset_root_path, output_file_path, com
                         dataset_dict[dataset_name][label]['train'][video_name] = {'label': label, 'frames': frame_paths}
                         dataset_dict[dataset_name][label]['test'][video_name] = {'label': label, 'frames': frame_paths}
                         dataset_dict[dataset_name][label]['val'][video_name] = {'label': label, 'frames': frame_paths}
+
+    # Enrich all video entries with audio metadata (no-op if audio not extracted)
+    _enrich_with_audio(dataset_dict)
 
     # Convert the dataset dictionary to JSON format and save to file
     output_file_path = os.path.join(output_file_path, dataset_name + '.json')
