@@ -39,7 +39,7 @@ try:
     from detectors.base_detector import AbstractDetector
     from metrics.registry import DETECTOR
     IN_DEEPFAKEBENCH = True
-except ImportError:
+except (ImportError, RuntimeError, Exception):
     import abc
     class AbstractDetector(nn.Module, metaclass=abc.ABCMeta):
         def __init__(self): super().__init__()
