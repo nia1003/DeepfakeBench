@@ -320,14 +320,16 @@ class SyncNetDetector(AbstractDetector):
                 "SyncNetDetector requires 'audio' in data_dict. "
                 "Set with_audio: true in config and re-run preprocessing."
             )
-        feat = self.features(data_dict)
+        # Encode once, reuse for both classifier and sync_error
+        video_feat = self._encode_video(data_dict['image'])
+        audio_feat = self._encode_audio(data_dict['audio'])
+        feat = torch.cat([video_feat, audio_feat], dim=1)
+
         logit = self.classifier(feat)
         prob = torch.softmax(logit, dim=1)[:, 1]
 
-        # Cosine distance as an interpretable sync_error metric
-        video_feat = self._encode_video(data_dict['image'])
-        audio_feat = self._encode_audio(data_dict['audio'])
-        sync_error = 1.0 - F.cosine_similarity(video_feat, audio_feat, dim=1)
+        # Cosine distance: clamp to [0, 1] (L2-normalised vectors can give ~1.02 due to fp)
+        sync_error = (1.0 - F.cosine_similarity(video_feat, audio_feat, dim=1)).clamp(0.0, 1.0)
 
         return {
             'cls': logit,
@@ -395,14 +397,15 @@ class SyncNetDetector(AbstractDetector):
             audio = audio.to(device)
             with torch.no_grad():
                 pred = self.forward({'image': image, 'audio': audio, 'label': None})
-            fake_score = float(pred['prob'][0].item())
+            # Use sync_error (already clamped to [0,1]) as fake_score per Week 11 contract
+            fake_score = float(pred['sync_error'][0].item())
             elapsed_ms = (time.perf_counter() - t_start) * 1000
             return {
                 'sample_id': sample_id,
                 'detector_name': 'SyncNet',
                 'modality': 'av_sync',
                 'fake_score': round(fake_score, 4),
-                'score_type': 'probability',
+                'score_type': 'sync_error',
                 'confidence': None,
                 'inference_time_ms': round(elapsed_ms, 3),
                 'window_start_sec': window_start_sec,
@@ -417,7 +420,7 @@ class SyncNetDetector(AbstractDetector):
                 'detector_name': 'SyncNet',
                 'modality': 'av_sync',
                 'fake_score': None,
-                'score_type': 'probability',
+                'score_type': 'sync_error',
                 'confidence': None,
                 'inference_time_ms': round(elapsed_ms, 3),
                 'window_start_sec': window_start_sec,
