@@ -279,6 +279,147 @@ PR 開好之後貼連結給 Nia review。
 
 ---
 
+## 8. 程式碼在實驗室機器但還沒進 repo？照這裡做
+
+你已經在實驗室機器跑通了，但東西放在自己的資料夾而不是 repo 裡面。  
+以下以 rPPG 為例，其他模態照著改就好。
+
+### Step 1：確認你有哪些檔案
+
+你的 rPPG 程式碼可能長這樣（路徑隨便舉例）：
+```
+~/my_work/rppg_model.py          ← 模型主體
+~/my_work/run_rppg.py            ← 推論腳本
+~/my_work/results/scores.csv     ← 跑出來的分數
+```
+
+### Step 2：把檔案複製到 repo 的正確位置
+
+```bash
+# 先確認你在 repo 根目錄
+cd /path/to/DeepfakeBench
+
+# detector → training/detectors/
+cp ~/my_work/rppg_model.py training/detectors/rppg_detector.py
+
+# inference 腳本 → evaluation/
+cp ~/my_work/run_rppg.py evaluation/run_rppg_inference.py
+
+# score CSV → evaluation/
+cp ~/my_work/results/scores.csv evaluation/scores_rppg_pos_v0.csv
+```
+
+### Step 3：修掉 detector 檔案裡的外部路徑依賴
+
+最常見的問題是 `sys.path` 指向你自己的資料夾：
+
+```python
+# ❌ 不能有這種東西
+import sys
+sys.path.insert(0, '/home/你的名字/my_project')
+from my_utils import something
+
+# ✅ 把用到的 utility 直接複製進來，或改用 repo 內的 import
+```
+
+如果你的程式碼引用了外部 package，加進 `requirements.txt` 就好（但確認 Nia 同意再加）。
+
+### Step 4：在 detector 檔案最上面加 try/except 保護
+
+讓 detector 在 DeepfakeBench 框架外也能獨立執行：
+
+```python
+import torch
+import torch.nn as nn
+
+try:
+    from detectors.base_detector import AbstractDetector
+    from metrics.registry import DETECTOR
+except (ImportError, RuntimeError, Exception):
+    import abc
+    class AbstractDetector(nn.Module, metaclass=abc.ABCMeta):
+        @abc.abstractmethod
+        def build_backbone(self, config): ...
+        @abc.abstractmethod
+        def build_loss(self, config): ...
+        @abc.abstractmethod
+        def features(self, data_dict): ...
+        @abc.abstractmethod
+        def classifier(self, features): ...
+        @abc.abstractmethod
+        def get_losses(self, data_dict, pred_dict): ...
+        @abc.abstractmethod
+        def get_train_metrics(self, data_dict, pred_dict): ...
+        @abc.abstractmethod
+        def forward(self, data_dict, inference=False): ...
+    class _R:
+        def register_module(self, module_name=None):
+            def d(cls): return cls
+            return d
+    DETECTOR = _R()
+```
+
+### Step 5：確認 class 名稱和 register_module 一致
+
+```python
+@DETECTOR.register_module(module_name='rppg')   # ← yaml 的 model_name 要跟這個一樣
+class RPPGDetector(AbstractDetector):
+    ...
+```
+
+### Step 6：加進 `__init__.py`
+
+```bash
+echo "from .rppg_detector import RPPGDetector" >> training/detectors/__init__.py
+```
+
+### Step 7：建 config 檔
+
+```bash
+# 從 syncnet.yaml 複製一份改
+cp training/config/detector/syncnet.yaml training/config/detector/rppg.yaml
+# 然後編輯：model_name 改成 rppg，with_audio 改成 false，其他參數自己調
+```
+
+### Step 8：修 inference 腳本的輸出格式
+
+確認 `evaluation/run_rppg_inference.py` 輸出的 CSV 欄位順序跟現有的一樣：
+
+```bash
+head -1 evaluation/scores_visual_xception_v0.csv
+head -1 evaluation/scores_rppg_pos_v0.csv
+# 兩行必須完全一樣
+```
+
+如果你的 CSV 欄位不對，參考 `run_syncnet_inference.py` 的 `SCORE_CSV_FIELDS` 清單。
+
+### Step 9：smoke test
+
+```bash
+# 確認 detector 可以獨立 import 不爆炸
+/path/to/DeepfakeBench/venv/bin/python training/detectors/rppg_detector.py
+```
+
+### Step 10：開 PR
+
+```bash
+git checkout main && git pull
+git checkout -b feature/rppg-detector
+
+git add training/detectors/rppg_detector.py
+git add training/detectors/__init__.py
+git add training/config/detector/rppg.yaml
+git add evaluation/run_rppg_inference.py
+git add evaluation/scores_rppg_pos_v0.csv
+
+git commit -m "feat(rPPG): add POS rPPG detector and inference script"
+git push -u origin feature/rppg-detector
+```
+
+然後貼 PR 連結給 Nia。
+
+---
+
 ## 快速 checklist
 
 開 PR 之前確認：
