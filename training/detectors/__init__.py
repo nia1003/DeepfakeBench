@@ -45,13 +45,10 @@ from .sia_detector import SIADetector
 from .tall_detector import TALLDetector
 from .effort_detector import EffortDetector
 
-# ── Anti-Deepfake-Box 整合 (framework branch) ──────────────────────────────
-# B-1: 最小可執行整合驗證 (dummy detector)
 from .dummy_detector import DummyDetector
 
-# B-2: 三模態 ADB Detector 適配器
-# 需要將 anti-deepfake-box 根目錄加入 PYTHONPATH：
-#   export PYTHONPATH=/path/to/anti-deepfake-box:$PYTHONPATH
+# Anti-Deepfake-Box 三模態 ADB Detector 適配器
+# export PYTHONPATH=/path/to/anti-deepfake-box:$PYTHONPATH
 try:
     from .adb_visual_detector import ADBVisualDetector
     from .adb_rppg_detector import ADBRPPGDetector
