@@ -93,13 +93,30 @@ class ADBSyncDetector(AbstractDetector):
             return nn.CrossEntropyLoss()
 
     def _get_audio_path(self, data_dict: dict) -> str | None:
-        """Extract audio from video_path if provided in data_dict."""
-        video_path = data_dict.get("video_path", None)
+        """
+        Resolve audio for sync detection.
+
+        Priority 1: pre-loaded PCM array from NPZ (data_dict['audio'], with_audio=True).
+                     Returned as-is so SyncDetector can accept ndarray directly.
+        Priority 2: on-the-fly extraction from data_dict['video_path'] (backward compat).
+        """
+        # Priority 1: NPZ-embedded PCM (int16 ndarray)
+        audio = data_dict.get("audio")
+        if audio is not None:
+            if isinstance(audio, list):
+                audio = audio[0]
+            if audio is not None:
+                return audio  # ndarray — SyncDetector handles both str and ndarray
+
+        # Priority 2: on-the-fly extraction from video_path
+        video_path = data_dict.get("video_path")
         if video_path is None:
             return None
         if isinstance(video_path, list):
             video_path = video_path[0]
-        return self.audio_extractor.extract_to_temp(str(video_path))
+        if video_path and Path(str(video_path)).exists():
+            return self.audio_extractor.extract_to_temp(str(video_path))
+        return None
 
     def features(self, data_dict: dict) -> torch.Tensor:
         """Return sync confidence as feature (B, 1)."""

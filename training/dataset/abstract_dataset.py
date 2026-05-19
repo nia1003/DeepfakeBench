@@ -73,11 +73,12 @@ class DeepfakeAbstractBaseDataset(data.Dataset):
         if mode == 'train':
             dataset_list = config['train_dataset']
             # Training data should be collected together for training
-            image_list, label_list = [], []
+            image_list, label_list, name_list = [], [], []
             for one_data in dataset_list:
                 tmp_image, tmp_label, tmp_name = self.collect_img_and_label_for_one_dataset(one_data)
                 image_list.extend(tmp_image)
                 label_list.extend(tmp_label)
+                name_list.extend(tmp_name)
             if self.lmdb:
                 if len(dataset_list)>1:
                     if all_in_pool(dataset_list,FFpp_pool):
@@ -104,8 +105,10 @@ class DeepfakeAbstractBaseDataset(data.Dataset):
 
         # Create a dictionary containing the image and label lists
         self.data_dict = {
-            'image': self.image_list, 
-            'label': self.label_list, 
+            'image': self.image_list,
+            'label': self.label_list,
+            'video_name': list(name_list),
+            'npz_path': [None] * len(name_list),
         }
         
         self.transform = self.init_data_aug_method()
@@ -540,8 +543,21 @@ class DeepfakeAbstractBaseDataset(data.Dataset):
             if not any(m is None or (isinstance(m, list) and None in m) for m in mask_tensors):
                 mask_tensors = mask_tensors[0]
 
-        return image_tensors, label, landmark_tensors, mask_tensors
-    
+        # Load audio from NPZ cache when with_audio=True
+        audio_samples = None
+        if self.config.get('with_audio', False):
+            npz_path = self.data_dict.get('npz_path', [None])[index]
+            if npz_path is not None and os.path.exists(str(npz_path)):
+                try:
+                    npz = np.load(str(npz_path), allow_pickle=False)
+                    if 'audio_samples' in npz:
+                        audio_samples = npz['audio_samples']  # int16 PCM ndarray
+                except Exception:
+                    pass
+
+        video_name = self.data_dict.get('video_name', [None])[index]
+        return image_tensors, label, landmark_tensors, mask_tensors, video_name, audio_samples
+
     @staticmethod
     def collate_fn(batch):
         """
@@ -556,12 +572,19 @@ class DeepfakeAbstractBaseDataset(data.Dataset):
             and the mask tensor.
         """
         # Separate the image, label, landmark, and mask tensors
-        images, labels, landmarks, masks = zip(*batch)
-        
+        # Guard against subclasses that still return 4-tuples (backward compat)
+        n = len(batch[0])
+        if n == 6:
+            images, labels, landmarks, masks, video_names, audio_list = zip(*batch)
+        else:
+            images, labels, landmarks, masks = zip(*batch)
+            video_names = None
+            audio_list = None
+
         # Stack the image, label, landmark, and mask tensors
         images = torch.stack(images, dim=0)
         labels = torch.LongTensor(labels)
-        
+
         # Special case for landmarks and masks if they are None
         if not any(landmark is None or (isinstance(landmark, list) and None in landmark) for landmark in landmarks):
             landmarks = torch.stack(landmarks, dim=0)
@@ -579,6 +602,12 @@ class DeepfakeAbstractBaseDataset(data.Dataset):
         data_dict['label'] = labels
         data_dict['landmark'] = landmarks
         data_dict['mask'] = masks
+        data_dict['video_path'] = list(video_names) if video_names is not None else None
+        data_dict['audio'] = (
+            list(audio_list)
+            if audio_list is not None and any(a is not None for a in audio_list)
+            else None
+        )
         return data_dict
 
     def __len__(self):

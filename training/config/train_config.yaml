@@ -1,6 +1,7 @@
 mode: train
 lmdb: True
 dry_run: false
+with_audio: false   # set true to load pre-decoded PCM from NPZ cache (requires ADB preprocessing)
 rgb_dir: './datasets/rgb'
 lmdb_dir:  './datasets/lmdb'
 dataset_json_folder: './preprocessing/dataset_json'
